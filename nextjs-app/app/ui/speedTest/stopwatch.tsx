@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from '../home.module.css';
+import { lusitana } from "../fonts";
 
 export default function Stopwatch () {
     // state to store time
@@ -14,7 +15,7 @@ export default function Stopwatch () {
     useEffect(() => {
       let intervalId: number | NodeJS.Timeout | undefined;
       if (isRunning) {
-        // setting time from 0 to 1 every 10 milisecond using javascript setInterval method
+        // setting time from 0 to 1 every 10 millisecond using javascript setInterval method
         intervalId = setInterval(() => setTime(time + 1), 10);
       }
       return () => clearInterval(intervalId);
@@ -34,20 +35,12 @@ export default function Stopwatch () {
   
     // Method to start timer
     const startTimer = () => {
-        // if (isRunning === false) {
-        //     setFinalResult(time)
-        //     console.log(time)
-        // }
         setTime(0)
         setIsRunning(!isRunning);
     };
 
     // Method to stop timer
     const stopTimer = () => {
-        // if (isRunning === false) {
-        //     setFinalResult(time)
-        //     console.log(time)
-        // }
         setIsRunning(!isRunning);
         setFinalResult(time)
         console.log(`stopTimer: ${time}`)
@@ -56,27 +49,25 @@ export default function Stopwatch () {
 
     return (
       <div>
-        <p className={`${styles.time}`}>
-          {hours}:{minutes.toString().padStart(2, "0")}:
-          {seconds.toString().padStart(2, "0")}:
-          {milliseconds.toString().padStart(2, "0")}
-        </p>
-        <div className={`${styles.buttonsContainer}`}>
+        <div className={`${styles.timerbuttonsContainer}`}>
             {isRunning ?
-                <button className={`${styles.buttonsContainer} ${styles.stop}`} onClick={stopTimer}>
+                <button className={`${styles.timerbuttonsContainer} ${styles.stop}`} onClick={stopTimer}>
                     Stop
                 </button>
                 :
-                <button className={`${styles.buttonsContainer} ${styles.start}`} onClick={startTimer}>
+                <button className={`${styles.timerbuttonsContainer} ${styles.start}`} onClick={startTimer}>
                     Start
                 </button>
             }
         </div>
-        {isRunning == false &&
-            <p>This is where the reading speed calculation results will display</p>
+        {(time > 0 && isRunning === false) &&
+            <div>
+                <p className={`${styles.time}`}>
+                    {hours}h {minutes.toString().padStart(2, "0")}m {seconds.toString().padStart(2, "0")}s {milliseconds.toString().padStart(2, "0")}ms
+                </p>
+                <p>(This is where the reading speed calculation results will display)</p>
+            </div>
         }
       </div>
     );
   };
-  
-//   export default Stopwatch;

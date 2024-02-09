@@ -8,7 +8,6 @@ export default function Logo() {
     >
       <BookOpenIcon className="h-12 w-12 rotate-[15deg]" />
       <p className="text-[16px]">Fatima Rizvi</p>
-      {/* <p className="text-[44px]">Fatima Rizvi</p> */}
     </div>
   );
 }
