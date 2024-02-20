@@ -12,6 +12,14 @@
     font-size: 20px;
 }
 
+.results {
+    text-align: center;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+    padding: .25rem;
+}
+
 .timerbuttonsContainer {
     display: flex;
     justify-content: center;
@@ -31,4 +39,19 @@
 
 .stop {
     background-color: red;
+}
+
+.input {
+    padding: 10px;
+}
+
+.submitButton {
+    margin: 20px;
+    border: none;
+    padding: 10px 30px;
+    cursor: pointer;
+    color: white;
+    background-color: rgb(34, 88, 250);
+    border-radius: 8px;
+    font-weight: bold;
 }

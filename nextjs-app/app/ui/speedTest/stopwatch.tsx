@@ -11,6 +11,9 @@ export default function Stopwatch () {
 
     // state to store result
     const [finalResult, setFinalResult] = useState<number>(0);
+
+    // state to store readingSpeed
+    const [wordsPerMinute, setWordsPerMinute] = useState<number>(0);
   
     useEffect(() => {
       let intervalId: number | NodeJS.Timeout | undefined;
@@ -43,9 +46,18 @@ export default function Stopwatch () {
     const stopTimer = () => {
         setIsRunning(!isRunning);
         setFinalResult(time)
+        calculateTime(time)
         console.log(`stopTimer: ${time}`)
         console.log(finalResult) // this is not ready yet, but it may be ready in time to send to the api
     };
+
+    const calculateTime = (timeSpentReading: number) => {
+        const seconds = Math.floor((timeSpentReading % 6000) / 100);
+        let minutes = Math.floor((timeSpentReading % 360000) / 6000);
+        let wordsPerSecond = 330 / seconds;
+        let wordsPerMinute = wordsPerSecond * 60
+        setWordsPerMinute(wordsPerMinute);
+    }
 
     return (
       <div>
@@ -63,9 +75,11 @@ export default function Stopwatch () {
         {(time > 0 && isRunning === false) &&
             <div>
                 <p className={`${styles.time}`}>
-                    {hours}h {minutes.toString().padStart(2, "0")}m {seconds.toString().padStart(2, "0")}s {milliseconds.toString().padStart(2, "0")}ms
+                    Time: {hours}h {minutes.toString().padStart(2, "0")}m {seconds.toString().padStart(2, "0")}s {milliseconds.toString().padStart(2, "0")}ms
                 </p>
-                <p>(This is where the reading speed calculation results will display)</p>
+                <p className={`text-center mt-8 text-m md:text-m`}>Your reading speed is:</p>
+                <p className={`${styles.results}`}>{wordsPerMinute} WPM</p>
+                <p className={`text-center mb-2 text-m md:text-m`}>(words per minute)</p>
             </div>
         }
       </div>
