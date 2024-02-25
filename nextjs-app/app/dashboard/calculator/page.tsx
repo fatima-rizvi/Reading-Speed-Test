@@ -9,24 +9,17 @@ import { useState } from "react";
 // }
 
 export default function Page() {
-    // const [formInputs, setFormInputs] = useState<IFormInputs>({wordCount: 0, readingSpeed: 0});
-
-    // const handleChange = (event: any) => {
-    //     console.log(event.target.value)
-    //     const name = event.target.name;
-    //     const value = event.target.value;
-    //     setFormInputs(values => ({...values, [name]: value}))
-    // }
-    
+      
     const [wordCount, setWordCount] = useState(0);
     const [readingSpeed, setReadingSpeed] = useState(0);
     const [timeToRead, setTimeToRead] = useState<string>("");
 
-    const onSubmit = (event) => {
+    const onSubmit = (event: any) => {
         event.preventDefault();
         const form = event.target;
         const formData = new FormData(form);
         const formJson = Object.fromEntries(formData.entries());
+        // @ts-expect-error
         calculateReadingTime(formJson.wordCount, formJson.readingSpeed)
     }
 
@@ -35,14 +28,16 @@ export default function Page() {
         console.log(`Wpm: ${wpm}`)
         let numWords = parseInt(numberOfWords)
         let numWpm = parseInt(wpm)
+
         console.log(`Num Words: ${numberOfWords}`)
         console.log(`Num Wpm: ${wpm}`)
-        // let hours = Math.floor(numberOfWords % (wpm * 60))
         let totalMinutes = Math.floor(numWords / numWpm)
+
         console.log(`totalMinutes: ${totalMinutes}`)
         let hours = Math.floor(totalMinutes / 60)
         let minutesToSubtract = hours * 60
         let minutes = totalMinutes - minutesToSubtract
+
         console.log(`Hours: ${hours}, Minutes: ${minutes}`)
         setTimeToRead(`${hours} hours, ${minutes} minutes`)
     }
@@ -61,6 +56,7 @@ export default function Page() {
                             type="number" 
                             name="wordCount"
                             value={wordCount}
+                            // @ts-expect-error
                             onChange={e => setWordCount(e.target.value)}
                         />
                 </div>
@@ -71,6 +67,7 @@ export default function Page() {
                             type="number" 
                             name="readingSpeed"
                             value={readingSpeed}
+                            // @ts-expect-error
                             onChange={e => setReadingSpeed(e.target.value)}
                         />
                 </div>
