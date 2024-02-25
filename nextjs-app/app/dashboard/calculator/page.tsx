@@ -1,18 +1,19 @@
 'use client'
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tooltip, useDisclosure } from '@nextui-org/react';
 import styles from '../../ui/home.module.css';
 
 import { useState } from "react";
-
-// interface IFormInputs  {
-//     wordCount: number;
-//     readingSpeed: number;
-// }
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import clsx from 'clsx';
 
 export default function Page() {
       
     const [wordCount, setWordCount] = useState(0);
     const [readingSpeed, setReadingSpeed] = useState(0);
     const [timeToRead, setTimeToRead] = useState<string>("");
+    const {isOpen, onOpen, onOpenChange} = useDisclosure();
+
+    const InfoIcon = InformationCircleIcon;
 
     const onSubmit = (event: any) => {
         event.preventDefault();
@@ -45,31 +46,65 @@ export default function Page() {
     return (
         <>
             <h1 className={`text-center mb-2 text-2xl md:text-2xl font-bold underline underline-offset-2`}>Reading Time Calculator</h1>
-            <h2 className={`mb-2 text-2m md:text-2m font-bold underline underline-offset-2`}>Instructions: </h2>
-            <p>Enter the number of words you want to read and your reading speed below:</p>
+            <Button key='instructions' onPress={onOpen} className={`m-2`}>Click for Instructions</Button>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>  
+                <ModalContent>
+                    {
+                        (onClose)=>(
+                            <>
+                                <ModalHeader className="flex flex-col gap-1">How it works:</ModalHeader> 
+                                <ModalBody>
+                                    <p>Enter the number of words you want to read and your reading speed in the provided form.</p>
+                                </ModalBody>
+                                <ModalFooter>
+                                <Button color="primary" onPress={onClose}>   
+                                    Close
+                                </Button>
+                                </ModalFooter>
+                            </>
+                        )
+                    }
+                </ModalContent>
+            </Modal>
             <br />
             <form onSubmit={onSubmit}>
                 <div className={`${styles.input}`}>
-                    <p>Word count:
-                    </p>
-                        <input 
-                            type="number" 
-                            name="wordCount"
-                            value={wordCount}
-                            // @ts-expect-error
-                            onChange={e => setWordCount(e.target.value)}
-                        />
+                    <label
+                        className={clsx(
+                            'flex items-center justify-center gap-2 rounded-md p-3 text-sm font-medium md:flex-none md:justify-start md:p-2 md:px-3'
+                        )}
+                    >
+                        <p className="hidden md:block">Word count: </p>
+                        <Tooltip key='wordCountInfo' color='secondary' content="The word count of the book or passage you want to read">
+                            <InfoIcon className="w-6" />
+                        </Tooltip>
+                    </label>
+                    <input 
+                        type="number" 
+                        name="wordCount"
+                        value={wordCount}
+                        // @ts-expect-error
+                        onChange={e => setWordCount(e.target.value)}
+                    />
                 </div>
                 <div className={`${styles.input}`}>
-                    <p>Reading speed (words per minute):
-                    </p>
-                        <input 
-                            type="number" 
-                            name="readingSpeed"
-                            value={readingSpeed}
-                            // @ts-expect-error
-                            onChange={e => setReadingSpeed(e.target.value)}
-                        />
+                    <label
+                        className={clsx(
+                            'flex items-center justify-center gap-2 rounded-md p-3 text-sm font-medium md:flex-none md:justify-start md:p-2 md:px-3'
+                        )}
+                    >
+                        <p className="hidden md:block">Reading Speed (WPM): </p>
+                        <Tooltip key='wordCountInfo' color='secondary' content="Words Per Minute">
+                            <InfoIcon className="w-6" />
+                        </Tooltip>
+                    </label>
+                    <input 
+                        type="number" 
+                        name="readingSpeed"
+                        value={readingSpeed}
+                        // @ts-expect-error
+                        onChange={e => setReadingSpeed(e.target.value)}
+                    />
                 </div>
                 <input type="submit" className={`${styles.submitButton}`}/>
             </form>

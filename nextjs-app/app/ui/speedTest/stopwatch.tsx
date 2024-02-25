@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styles from '../home.module.css';
 import { lusitana } from "../fonts";
-import Link from "next/link";
-import { LinkIcon } from "@heroicons/react/24/outline";
-import clsx from "clsx";
-import { usePathname } from "next/navigation";
+import { Tooltip } from "@nextui-org/react";
 
 export default function Stopwatch () {
-    const pathname = usePathname();
     
     // state to show/hide the passage
     const [showPassage, setShowPassage] = useState(false);
@@ -23,6 +19,9 @@ export default function Stopwatch () {
 
     // state to store readingSpeed
     const [wordsPerMinute, setWordsPerMinute] = useState<number>(0);
+
+    // Check if this will be a redo
+    const [isRedo, setIsRedo] = useState(false);
   
     useEffect(() => {
       let intervalId: number | NodeJS.Timeout | undefined;
@@ -47,19 +46,20 @@ export default function Stopwatch () {
   
     // Method to start timer
     const startTimer = () => {
-        setTime(0)
+        setTime(0);
         setIsRunning(!isRunning);
         setShowPassage(true);
+        setIsRedo(true);
     };
 
     // Method to stop timer
     const stopTimer = () => {
         setShowPassage(false);
         setIsRunning(!isRunning);
-        setFinalResult(time)
-        calculateTime(time)
-        console.log(`stopTimer: ${time}`)
-        console.log(finalResult) // this is not ready yet, but it may be ready in time to send to the api
+        setFinalResult(time);
+        calculateTime(time);
+        console.log(`stopTimer: ${time}`);
+        console.log(finalResult); // this is not ready yet, but it may be ready in time to send to the api
     };
 
     const calculateTime = (timeSpentReading: number) => {
@@ -74,7 +74,34 @@ export default function Stopwatch () {
     return (
       <div>
         <div className={`${styles.timerbuttonsContainer}`}>
-            {isRunning ?
+            {isRedo ?
+                <>
+                    {isRunning ?
+                        <button className={`${styles.timerbuttonsContainer} ${styles.stop}`} onClick={stopTimer}>
+                            Stop
+                        </button>
+                        :
+                        <Tooltip key='danger' color='danger' content='WARNING: Re-starting the timer will erase your previous result. Write down your reading time if you want to keep it.' className="capitalize">
+                            <button className={`${styles.timerbuttonsContainer} ${styles.start}`} onClick={startTimer}>
+                                Redo
+                            </button>
+                        </Tooltip>
+                    }
+                </>
+                :
+                <>
+                    {isRunning ?
+                        <button className={`${styles.timerbuttonsContainer} ${styles.stop}`} onClick={stopTimer}>
+                            Stop
+                        </button>
+                        :
+                        <button className={`${styles.timerbuttonsContainer} ${styles.start}`} onClick={startTimer}>
+                            Start
+                        </button>
+                    }
+                </>
+            }
+            {/* {isRunning ?
                 <button className={`${styles.timerbuttonsContainer} ${styles.stop}`} onClick={stopTimer}>
                     Stop
                 </button>
@@ -82,7 +109,7 @@ export default function Stopwatch () {
                 <button className={`${styles.timerbuttonsContainer} ${styles.start}`} onClick={startTimer}>
                     Start
                 </button>
-            }
+            } */}
         </div>
         {/* Note, passage below is 330 words */}
         {
