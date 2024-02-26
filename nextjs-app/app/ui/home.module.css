@@ -61,3 +61,23 @@
     border-radius: 8px;
     font-weight: bold;
 }
+
+.featuresListContainer {
+    list-style-type: decimal;
+}
+
+.directionsContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.directionsButton {
+    background-color: rgb(34, 88, 250);
+    color: white;
+    font-weight: bold;
+}
+
+.calculatorButtonContainer {
+    display: flex;
+    justify-content: end;
+}

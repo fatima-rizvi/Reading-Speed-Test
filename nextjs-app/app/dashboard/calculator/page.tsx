@@ -8,8 +8,8 @@ import clsx from 'clsx';
 
 export default function Page() {
       
-    const [wordCount, setWordCount] = useState(0);
-    const [readingSpeed, setReadingSpeed] = useState(0);
+    const [wordCount, setWordCount] = useState();
+    const [readingSpeed, setReadingSpeed] = useState();
     const [timeToRead, setTimeToRead] = useState<string>("");
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
@@ -37,7 +37,7 @@ export default function Page() {
         console.log(`totalMinutes: ${totalMinutes}`)
         let hours = Math.floor(totalMinutes / 60)
         let minutesToSubtract = hours * 60
-        let minutes = totalMinutes - minutesToSubtract
+        let minutes = Math.floor(totalMinutes - minutesToSubtract)
 
         console.log(`Hours: ${hours}, Minutes: ${minutes}`)
         setTimeToRead(`${hours} hours, ${minutes} minutes`)
@@ -55,6 +55,7 @@ export default function Page() {
                                 <ModalHeader className="flex flex-col gap-1">How it works:</ModalHeader> 
                                 <ModalBody>
                                     <p>Enter the number of words you want to read and your reading speed in the provided form.</p>
+                                    <p>You can rerun the calculation with various inputs as many times as you want.</p>
                                 </ModalBody>
                                 <ModalFooter>
                                 <Button color="primary" onPress={onClose}>   
@@ -74,7 +75,7 @@ export default function Page() {
                             'flex items-center justify-center gap-2 rounded-md p-3 text-sm font-medium md:flex-none md:justify-start md:p-2 md:px-3'
                         )}
                     >
-                        <p className="hidden md:block">Word count: </p>
+                        <p className="hidden md:block">1. Word count: </p>
                         <Tooltip key='wordCountInfo' color='secondary' content="The word count of the book or passage you want to read">
                             <InfoIcon className="w-6" />
                         </Tooltip>
@@ -93,7 +94,7 @@ export default function Page() {
                             'flex items-center justify-center gap-2 rounded-md p-3 text-sm font-medium md:flex-none md:justify-start md:p-2 md:px-3'
                         )}
                     >
-                        <p className="hidden md:block">Reading Speed (WPM): </p>
+                        <p className="hidden md:block">2. Reading Speed (WPM): </p>
                         <Tooltip key='wordCountInfo' color='secondary' content="Words Per Minute">
                             <InfoIcon className="w-6" />
                         </Tooltip>
@@ -106,7 +107,9 @@ export default function Page() {
                         onChange={e => setReadingSpeed(e.target.value)}
                     />
                 </div>
-                <input type="submit" className={`${styles.submitButton}`}/>
+                <Tooltip key='danger' color='danger' content='WARNING: Running a new calculation will erase your previous result. Write down your reading time if you want to keep it.' className="capitalize">
+                    <input type="submit" className={`${styles.submitButton}`}/>
+                </Tooltip>
             </form>
             {
                 timeToRead &&

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styles from '../home.module.css';
 import { lusitana } from "../fonts";
-import { Tooltip } from "@nextui-org/react";
+import { Link, Tooltip } from "@nextui-org/react";
+import { CalculatorIcon } from "@heroicons/react/24/outline";
+import clsx from "clsx";
 
 export default function Stopwatch () {
     
@@ -22,6 +24,8 @@ export default function Stopwatch () {
 
     // Check if this will be a redo
     const [isRedo, setIsRedo] = useState(false);
+
+    const CalcIcon = CalculatorIcon;
   
     useEffect(() => {
       let intervalId: number | NodeJS.Timeout | undefined;
@@ -67,7 +71,7 @@ export default function Stopwatch () {
         const seconds = Math.floor((timeSpentReading % 6000) / 100);
         // let minutes = Math.floor((timeSpentReading % 360000) / 6000);
         let wordsPerSecond = 330 / seconds;
-        let wordsPerMinute = wordsPerSecond * 60
+        let wordsPerMinute = Math.floor(wordsPerSecond * 60);
         setWordsPerMinute(wordsPerMinute);
     }
 
@@ -81,7 +85,7 @@ export default function Stopwatch () {
                             Stop
                         </button>
                         :
-                        <Tooltip key='danger' color='danger' content='WARNING: Re-starting the timer will erase your previous result. Write down your reading time if you want to keep it.' className="capitalize">
+                        <Tooltip key='danger' color='danger' content='WARNING: Re-starting the timer will erase your previous result. Write down your reading speed if you want to keep it.' className="capitalize">
                             <button className={`${styles.timerbuttonsContainer} ${styles.start}`} onClick={startTimer}>
                                 Redo
                             </button>
@@ -101,15 +105,6 @@ export default function Stopwatch () {
                     }
                 </>
             }
-            {/* {isRunning ?
-                <button className={`${styles.timerbuttonsContainer} ${styles.stop}`} onClick={stopTimer}>
-                    Stop
-                </button>
-                :
-                <button className={`${styles.timerbuttonsContainer} ${styles.start}`} onClick={startTimer}>
-                    Start
-                </button>
-            } */}
         </div>
         {/* Note, passage below is 330 words */}
         {
@@ -130,6 +125,20 @@ export default function Stopwatch () {
                 <p className={`text-center mt-8 text-m md:text-m`}>Your reading speed is:</p>
                 <p className={`${styles.results}`}>{wordsPerMinute} WPM</p>
                 <p className={`text-center mb-2 text-m md:text-m`}>(words per minute)</p>
+                <div className={`${styles.calculatorButtonContainer}`}>
+                    <Tooltip key='secondary' color='secondary' content="Write down your WPM and navigate to the Reading Time Calculator" className="capitalize">
+                        <Link
+                        key="Reading Time Calculator"
+                        href="/dashboard/calculator"
+                        className={clsx(
+                            'gap-2 rounded-md p-3 text-sm font-medium hover:text-blue-600 md:flex-none md:justify-end md:p-2 md:px-3'
+                        )}
+                        >
+                        <CalcIcon className="w-6" />
+                            <p className="hidden md:block">Next: Go to the Reading Time Calculator</p>
+                        </Link>
+                    </Tooltip>
+                </div>
             </div>
         }
       </div>
