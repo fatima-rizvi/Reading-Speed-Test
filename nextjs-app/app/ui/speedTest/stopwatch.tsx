@@ -66,13 +66,24 @@ export default function Stopwatch () {
         console.log(finalResult); // this is not ready yet, but it may be ready in time to send to the api
     };
 
-    const calculateTime = (timeSpentReading: number) => {
-        // Send to the API from here
+    async function calculateTime(timeSpentReading: number) {
         const seconds = Math.floor((timeSpentReading % 6000) / 100);
-        // let minutes = Math.floor((timeSpentReading % 360000) / 6000);
-        let wordsPerSecond = 330 / seconds;
-        let wordsPerMinute = Math.floor(wordsPerSecond * 60);
-        setWordsPerMinute(wordsPerMinute);
+        const req = { 
+            time: seconds,
+            words: 330 };
+        const response = await fetch('http://localhost:3000/reading-speed-test', {
+                mode: 'cors',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': '*/*'
+                },
+                body: JSON.stringify(req)
+            });
+        console.log("response", response)
+        const result = await response.json();
+        console.log("Years until breakeven: ", result)
+        setWordsPerMinute(result.wordsPerMinute);
     }
 
     return (

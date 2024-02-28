@@ -24,23 +24,24 @@ export default function Page() {
         calculateReadingTime(formJson.wordCount, formJson.readingSpeed)
     }
 
-    const calculateReadingTime = (numberOfWords: string, wpm: string) => {
-        console.log(`Words: ${numberOfWords}`)
-        console.log(`Wpm: ${wpm}`)
-        let numWords = parseInt(numberOfWords)
-        let numWpm = parseInt(wpm)
-
-        console.log(`Num Words: ${numberOfWords}`)
-        console.log(`Num Wpm: ${wpm}`)
-        let totalMinutes = Math.floor(numWords / numWpm)
-
-        console.log(`totalMinutes: ${totalMinutes}`)
-        let hours = Math.floor(totalMinutes / 60)
-        let minutesToSubtract = hours * 60
-        let minutes = Math.floor(totalMinutes - minutesToSubtract)
-
-        console.log(`Hours: ${hours}, Minutes: ${minutes}`)
-        setTimeToRead(`${hours} hours, ${minutes} minutes`)
+    async function calculateReadingTime(numberOfWords: string, wpm: string) {
+        const req = { 
+            speed: wpm,
+            words: numberOfWords };
+        const response = await fetch('http://localhost:3000/reading-time-calculator', {
+                mode: 'cors',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': '*/*'
+                },
+                body: JSON.stringify(req)
+            });
+        console.log("response", response)
+        const result = await response.json();
+        console.log("Hours: ", result.hours)
+        console.log("Minute: ", result.minutes)
+        setTimeToRead(`${result.hours} hours, ${result.minutes} minutes`);
     }
     
     return (

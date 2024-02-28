@@ -23,19 +23,26 @@ export default function Page() {
         const formData = new FormData(form);
         const formJson = Object.fromEntries(formData.entries());
         // @ts-expect-error
-        calculateReadingSpeed(formJson.wordCount, formJson.time)
+        calculateTime(formJson.wordCount, formJson.time)
     }
 
-    const calculateReadingSpeed = (wordCount: number, time: number) => {
-        console.log(`wordCount: ${wordCount}`)
-        console.log(`time: ${time}`)
-
-        let wordsPerSecond = wordCount / time;
-        let wordsPerMinute = Math.floor(wordsPerSecond * 60);
-        // @ts-expect-error
-        setTimeToRead(wordsPerMinute);
-
-        console.log(`wordsPerMinute: ${wordsPerMinute}`)
+    async function calculateTime(wordCount: number, secondsSpentReading: number) {
+        const req = { 
+            time: secondsSpentReading,
+            words: wordCount };
+        const response = await fetch('http://localhost:3000/reading-speed-test', {
+                mode: 'cors',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': '*/*'
+                },
+                body: JSON.stringify(req)
+            });
+        console.log("response", response)
+        const result = await response.json();
+        console.log("Years until breakeven: ", result)
+        setTimeToRead(result.wordsPerMinute);
     }
 
     return (
