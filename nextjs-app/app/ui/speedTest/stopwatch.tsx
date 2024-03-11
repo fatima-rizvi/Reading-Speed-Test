@@ -68,7 +68,7 @@ export default function Stopwatch () {
         const seconds = Math.floor((timeSpentReading % 6000) / 100);
         const req = { 
             time: seconds,
-            words: 330 };
+            words: 330 };   // Word count is the legnth of the passage below
         const response = await fetch('http://localhost:3000/reading-speed-test', {
                 mode: 'cors',
                 method: 'post',
