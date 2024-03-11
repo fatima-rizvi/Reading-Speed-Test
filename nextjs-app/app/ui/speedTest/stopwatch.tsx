@@ -17,7 +17,6 @@ export default function Stopwatch () {
     const [isRunning, setIsRunning] = useState(false);
 
     // state to store result
-    const [finalResult, setFinalResult] = useState<number>(0);
 
     // state to store readingSpeed
     const [wordsPerMinute, setWordsPerMinute] = useState<number>(0);
@@ -60,13 +59,12 @@ export default function Stopwatch () {
     const stopTimer = () => {
         setShowPassage(false);
         setIsRunning(!isRunning);
-        setFinalResult(time);
-        calculateTime(time);
-        console.log(`stopTimer: ${time}`);
-        console.log(finalResult); // this is not ready yet, but it may be ready in time to send to the api
+        // setFinalResult(time);
+        calculateSpeed(time);
     };
 
-    async function calculateTime(timeSpentReading: number) {
+    /** Calculate the reading speed */
+    async function calculateSpeed(timeSpentReading: number) {
         const seconds = Math.floor((timeSpentReading % 6000) / 100);
         const req = { 
             time: seconds,
@@ -80,9 +78,7 @@ export default function Stopwatch () {
                 },
                 body: JSON.stringify(req)
             });
-        console.log("response", response)
         const result = await response.json();
-        console.log("Years until breakeven: ", result)
         setWordsPerMinute(result.wordsPerMinute);
     }
 

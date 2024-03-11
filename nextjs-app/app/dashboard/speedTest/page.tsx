@@ -17,16 +17,18 @@ export default function Page() {
 
     const InfoIcon = InformationCircleIcon;
 
+    /** Submit the form input to calculate the reading tome */
     const onSubmit = (event: any) => {
         event.preventDefault();
         const form = event.target;
         const formData = new FormData(form);
         const formJson = Object.fromEntries(formData.entries());
         // @ts-expect-error
-        calculateTime(formJson.wordCount, formJson.time)
+        calculateSpeed(formJson.wordCount, formJson.time)
     }
 
-    async function calculateTime(wordCount: number, secondsSpentReading: number) {
+    /** Calculate the reading speed */
+    async function calculateSpeed(wordCount: number, secondsSpentReading: number) {
         const req = { 
             time: secondsSpentReading,
             words: wordCount };
@@ -39,9 +41,7 @@ export default function Page() {
                 },
                 body: JSON.stringify(req)
             });
-        console.log("response", response)
         const result = await response.json();
-        console.log("Years until breakeven: ", result)
         setTimeToRead(result.wordsPerMinute);
     }
 
@@ -118,7 +118,7 @@ export default function Page() {
                         name="time"
                         value={time}
                         // @ts-expect-error
-                        onChange={e => setReadingSpeed(e.target.value)}
+                        onChange={e => setTime(e.target.value)}
                     />
                 </div>
                 <Tooltip key='danger' color='danger' content='WARNING: Running a new calculation will erase your previous result. Write down your reading time if you want to keep it.' className="capitalize">

@@ -15,6 +15,7 @@ export default function Page() {
 
     const InfoIcon = InformationCircleIcon;
 
+    /** Submit the form input to calculate the reading time */
     const onSubmit = (event: any) => {
         event.preventDefault();
         const form = event.target;
@@ -24,6 +25,7 @@ export default function Page() {
         calculateReadingTime(formJson.wordCount, formJson.readingSpeed)
     }
 
+    /** Calculate the reading time */
     async function calculateReadingTime(numberOfWords: string, wpm: string) {
         const req = { 
             speed: wpm,
@@ -37,10 +39,7 @@ export default function Page() {
                 },
                 body: JSON.stringify(req)
             });
-        console.log("response", response)
         const result = await response.json();
-        console.log("Hours: ", result.hours)
-        console.log("Minute: ", result.minutes)
         setTimeToRead(`${result.hours} hours, ${result.minutes} minutes`);
     }
     
