@@ -6,6 +6,7 @@ import styles from "../../ui/home.module.css"
 import clsx from "clsx";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import { getReadingSpeedCalcResult } from "../sharedFunctions/utils";
 
 export default function Page() {
 
@@ -24,25 +25,13 @@ export default function Page() {
         const formData = new FormData(form);
         const formJson = Object.fromEntries(formData.entries());
         // @ts-expect-error
-        calculateSpeed(formJson.wordCount, formJson.time)
+        calculateReadingSpeed(formJson.wordCount, formJson.time)
     }
 
-    /** Calculate the reading speed */
-    async function calculateSpeed(wordCount: number, secondsSpentReading: number) {
-        const req = { 
-            time: secondsSpentReading,
-            words: wordCount };
-        const response = await fetch('http://localhost:3000/reading-speed-test', {
-                mode: 'cors',
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': '*/*'
-                },
-                body: JSON.stringify(req)
-            });
-        const result = await response.json();
-        setTimeToRead(result.wordsPerMinute);
+    /** Call util to calculate the reading speed */
+    async function calculateReadingSpeed(wordCount: number, secondsSpentReading: number) {
+        const result = await getReadingSpeedCalcResult(wordCount, secondsSpentReading)
+        setTimeToRead(result);
     }
 
     return (

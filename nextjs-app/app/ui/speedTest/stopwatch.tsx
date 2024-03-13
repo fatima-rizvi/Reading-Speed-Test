@@ -4,6 +4,7 @@ import { lusitana } from "../fonts";
 import { Link, Tooltip } from "@nextui-org/react";
 import { CalculatorIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
+import { getReadingSpeedCalcResult } from "@/app/dashboard/sharedFunctions/utils";
 
 export default function Stopwatch () {
     
@@ -28,16 +29,12 @@ export default function Stopwatch () {
       return () => clearInterval(intervalId);
     }, [isRunning, time]);
     
-    // Hours calculation
     const hours = Math.floor(time / 360000);
   
-    // Minutes calculation
     const minutes = Math.floor((time % 360000) / 6000);
   
-    // Seconds calculation
     const seconds = Math.floor((time % 6000) / 100);
   
-    // Milliseconds calculation
     const milliseconds = time % 100;
   
     const startTimer = () => {
@@ -50,26 +47,14 @@ export default function Stopwatch () {
     const stopTimer = () => {
         setShowPassage(false);
         setIsRunning(!isRunning);
-        calculateSpeed(time);
+        calculateReadingSpeed(time);
     };
 
-    /** Calculate the reading speed */
-    async function calculateSpeed(timeSpentReading: number) {
+    /** Call util to calculate the reading speed */
+    async function calculateReadingSpeed(timeSpentReading: number) {
         const seconds = Math.floor((timeSpentReading % 6000) / 100);
-        const req = { 
-            time: seconds,
-            words: 330 };   // Word count is the legnth of the passage below
-        const response = await fetch('http://localhost:3000/reading-speed-test', {
-                mode: 'cors',
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': '*/*'
-                },
-                body: JSON.stringify(req)
-            });
-        const result = await response.json();
-        setWordsPerMinute(result.wordsPerMinute);
+        const result = await getReadingSpeedCalcResult(330, seconds)    // 330 is the legnth of the passage below
+        setWordsPerMinute(result);
     }
 
     return (
@@ -103,7 +88,6 @@ export default function Stopwatch () {
                 </>
             }
         </div>
-        {/* Note, passage below is 330 words */}
         {
             showPassage &&
             <div>
