@@ -7,21 +7,14 @@ import clsx from "clsx";
 
 export default function Stopwatch () {
     
-    // state to show/hide the passage
     const [showPassage, setShowPassage] = useState(false);
 
-    // state to store time
     const [time, setTime] = useState(0);
   
-    // state to check stopwatch running or not
     const [isRunning, setIsRunning] = useState(false);
 
-    // state to store result
-
-    // state to store readingSpeed
     const [wordsPerMinute, setWordsPerMinute] = useState<number>(0);
 
-    // Check if this will be a redo
     const [isRedo, setIsRedo] = useState(false);
 
     const CalcIcon = CalculatorIcon;
@@ -47,7 +40,6 @@ export default function Stopwatch () {
     // Milliseconds calculation
     const milliseconds = time % 100;
   
-    // Method to start timer
     const startTimer = () => {
         setTime(0);
         setIsRunning(!isRunning);
@@ -55,11 +47,9 @@ export default function Stopwatch () {
         setIsRedo(true);
     };
 
-    // Method to stop timer
     const stopTimer = () => {
         setShowPassage(false);
         setIsRunning(!isRunning);
-        // setFinalResult(time);
         calculateSpeed(time);
     };
 
