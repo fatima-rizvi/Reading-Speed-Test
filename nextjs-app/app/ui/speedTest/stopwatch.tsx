@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styles from '../home.module.css';
-import { lusitana } from "../fonts";
 import { Link, Tooltip } from "@nextui-org/react";
 import { CalculatorIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";

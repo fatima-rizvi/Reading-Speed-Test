@@ -1,8 +1,7 @@
 'use client'
 
 import { Button, Modal, ModalContent, ModalBody, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
-import { lusitana } from "../ui/fonts";
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import styles from "../ui/home.module.css";
 
 export default function Page() {
