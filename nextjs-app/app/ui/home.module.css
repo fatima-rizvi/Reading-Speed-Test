@@ -1,0 +1,75 @@
+.time {
+    text-align: center;
+    color: black;
+    font-size: 20px;
+}
+
+.results {
+    text-align: center;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+    padding: .25rem;
+}
+
+.timerbuttonsContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.chipContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.timerbuttonsContainer button {
+    margin: 20px;
+    border: none;
+    padding: 10px 30px;
+    cursor: pointer;
+    color: black;
+    font-weight: bold;
+}
+
+.start {
+    background-color: green;
+}
+
+.stop {
+    background-color: red;
+}
+
+.input {
+    padding: 10px;
+}
+
+.submitButton {
+    margin: 20px;
+    border: none;
+    padding: 10px 30px;
+    cursor: pointer;
+    color: white;
+    background-color: rgb(34, 88, 250);
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.featuresListContainer {
+    list-style-type: decimal;
+}
+
+.directionsContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.directionsButton {
+    background-color: rgb(34, 88, 250);
+    color: white;
+    font-weight: bold;
+}
+
+.calculatorButtonContainer {
+    display: flex;
+    justify-content: end;
+}
